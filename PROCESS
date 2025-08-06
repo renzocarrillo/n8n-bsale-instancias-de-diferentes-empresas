@@ -1,0 +1,26 @@
+Llevaba tiempo pensando como conectar los dos sistemas que forman parte de la empresa de manera simple y automatizada. 
+Logré hacerlo usando n8n, webhooks y API de Bsale.
+
+Antes de continuar debo aclarar que existe un sistema principat y el sistema secundario en Bsale.
+El sistema principal es el que normalmente hará envíos al sistema secundario.
+En el caso del sistema de Peru, sera el RUC principal el mismo que el sistema principal.
+Los sistemas secundarios suelen ser RUC "menores" que reciben la mercadería de estos sistemas principales.
+Este flujo y sistema esta planteado para cuando las empresas forman parte de la misma organización.
+Para fines prácticos el sistema principal sera el sistema A y el secundario será el B.
+
+Cuando hablaba con mi agente de Bsale y le mencioné que estabamos planeando eso, me mencionó que se debia realizar de una manera específica.
+Se debe usar el documento de traslado interno con el ruc secundario y tipo de traslado "Venta".
+De esta manera no es un documento oficial ni declarado a SUNAT, sino de control interno
+
+Ahora empecemos con como funciona:
+
+Desde la Sucursal A:
+El webhook es configurado desde bsale como post y documents. 
+Con esto cada que se crea un documento en BSALE, es enviado a el webhook.
+
+En N8N:
+En el caso de los nodos, una vez se notifica al webhook el documento, se ejecuta un nodo tipo http que solicita la información del documento.
+Se filtran solo los documentos con el formato especîfico (los de traslado interno, con RUC de la sucursal).
+
+Seguiré subiendo actualizaciones de como voy avanzando
+
